@@ -10,7 +10,7 @@ def collisions(bird, t1, t2):
             if bird.colliderect(rect): return False
         for rect in t2:
             if bird.colliderect(rect): return False
-    if bird_rect.bottom>=350: return False
+    if bird_rect.bottom>=(height-150): return False
     return True
 
 def displayScore():
@@ -35,7 +35,9 @@ def tube_move(t1, t2):
 
 #starting game
 pygame.init()
-screen=pygame.display.set_mode((800,400))
+width=1280
+height=720
+screen=pygame.display.set_mode((width,height))
 pygame.display.set_caption('Flappy Bird')
 clock=pygame.time.Clock()
 
@@ -46,33 +48,33 @@ fontGG=pygame.font.Font('font/Pixeltype.ttf', 100)
 #surface background
 bg_surf=pygame.image.load('grafika/bg.png').convert()
 bg_surf=pygame.transform.scale2x(bg_surf)
-bg_rect=bg_surf.get_rect(center=(0,0))
+bg_rect=bg_surf.get_rect(center=(width//2,height//2 -125))
 
 ground_surf=pygame.image.load('grafika/ground.png').convert_alpha()
-ground_surf=pygame.transform.smoothscale(ground_surf, (800,200))
-ground_rect=ground_surf.get_rect(midtop=(400, 350))
+ground_surf=pygame.transform.smoothscale(ground_surf, (1280,200))
+ground_rect=ground_surf.get_rect(midtop=(width//2, height-150))
 
 #Bird
 bird_surf=pygame.image.load('grafika/bird.png').convert_alpha()
-bird_surf=pygame.transform.smoothscale(bird_surf,(48,34))
-bird_rect=bird_surf.get_rect(bottomleft=(50,175))
+bird_surf=pygame.transform.smoothscale(bird_surf,(int(48*1.6),int(34*1.8)))
+bird_rect=bird_surf.get_rect(bottomleft=(50,height-225))
 
 #tube
 tube1_surf=pygame.image.load('grafika/tube.png').convert_alpha()
-tube1_surf=pygame.transform.smoothscale(tube1_surf, (60,200))
-tube1_rect=tube1_surf.get_rect(midtop=(800, 300))
+tube1_surf=pygame.transform.smoothscale(tube1_surf, (int(60*1.6),int(200*1.8)))
+tube1_rect=tube1_surf.get_rect(midtop=(1280, 300))
 tubes1=[]
 
 tube2_surf=pygame.transform.rotate(tube1_surf, 180)
-tube2_rect=tube2_surf.get_rect(midbottom=(800,tube1_rect.y-150))
+tube2_rect=tube2_surf.get_rect(midbottom=(1280,tube1_rect.y-int(150*2)))
 tubes2=[]
 
 #messages
 gameM=font.render('Prace Space to start', False, 'black')
-gameM_rect=gameM.get_rect(center=(400,350))
+gameM_rect=gameM.get_rect(center=(width//2, height//2+50))
 
 gameName=fontGG.render('Flappy Bird', False, 'black')
-gameName_rect=gameName.get_rect(center=(400,200))
+gameName_rect=gameName.get_rect(center=(width//2,height//2-100))
 
 #timer
 tube_timer=pygame.USEREVENT+1
@@ -95,10 +97,10 @@ while True:
                 gravity=-13
         if game_active:
             if event.type==tube_timer:
-                x=random.randint(900,1100)
-                y=random.randint(180,330)
+                x=random.randint(1300,1580)
+                y=random.randint(height-460,height-100)
                 tubes1.append(tube1_surf.get_rect(midtop=(x, y)))
-                tubes2.append(tube2_surf.get_rect(midbottom=(x,y-150)))
+                tubes2.append(tube2_surf.get_rect(midbottom=(x,y-(150*1.8))))
 
     if game_active:
         #display bg
