@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "10.5.3.103", "label": "10.5.3.103", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "10.5.3.5", "label": "10.5.3.5", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "216.58.193.144", "label": "216.58.193.144", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "172.67.183.217", "label": "172.67.183.217", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "142.250.113.154", "label": "142.250.113.154", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "34.98.64.218", "label": "34.98.64.218", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "162.247.243.147", "label": "162.247.243.147", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "18.209.76.230", "label": "18.209.76.230", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "23.218.201.243", "label": "23.218.201.243", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "35.190.80.1", "label": "35.190.80.1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "44.196.139.167", "label": "44.196.139.167", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "199.232.69.140", "label": "199.232.69.140", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "239.255.255.250", "label": "239.255.255.250", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "45.153.243.93", "label": "45.153.243.93", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "23.218.201.30", "label": "23.218.201.30", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "34.230.160.76", "label": "34.230.160.76", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "23.22.22.139", "label": "23.22.22.139", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "35.71.131.137", "label": "35.71.131.137", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "10.5.3.255", "label": "10.5.3.255", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "52.109.88.35", "label": "52.109.88.35", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "74.119.118.154", "label": "74.119.118.154", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "34.107.254.252", "label": "34.107.254.252", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "52.37.173.98", "label": "52.37.173.98", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "3.139.123.30", "label": "3.139.123.30", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "34.239.40.119", "label": "34.239.40.119", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "142.251.33.14", "label": "142.251.33.14", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "151.101.50.114", "label": "151.101.50.114", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "142.250.204.3", "label": "142.250.204.3", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "69.147.87.252", "label": "69.147.87.252", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "13.107.21.200", "label": "13.107.21.200", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "204.79.197.200", "label": "204.79.197.200", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "104.117.247.32", "label": "104.117.247.32", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "52.182.128.59", "label": "52.182.128.59", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "13.69.239.74", "label": "13.69.239.74", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "23.218.204.72", "label": "23.218.204.72", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "40.100.45.210", "label": "40.100.45.210", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "52.96.121.194", "label": "52.96.121.194", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "52.108.248.98", "label": "52.108.248.98", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "13.107.6.163", "label": "13.107.6.163", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "23.38.92.72", "label": "23.38.92.72", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "13.107.18.254", "label": "13.107.18.254", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "52.96.17.2", "label": "52.96.17.2", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "13.107.6.171", "label": "13.107.6.171", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "13.89.179.9", "label": "13.89.179.9", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "52.183.220.149", "label": "52.183.220.149", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "13.69.116.104", "label": "13.69.116.104", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "209.197.3.8", "label": "209.197.3.8", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "179.60.150.125", "label": "179.60.150.125", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "52.185.211.133", "label": "52.185.211.133", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "208.111.176.192", "label": "208.111.176.192", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "20.189.173.15", "label": "20.189.173.15", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "40.78.63.86", "label": "40.78.63.86", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "108.156.224.77", "label": "108.156.224.77", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "151.101.193.140", "label": "151.101.193.140", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "108.138.159.109", "label": "108.138.159.109", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "142.251.33.8", "label": "142.251.33.8", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "204.79.197.219", "label": "204.79.197.219", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "142.251.35.202", "label": "142.251.35.202", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "3.139.21.195", "label": "3.139.21.195", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "35.190.60.146", "label": "35.190.60.146", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "142.251.116.156", "label": "142.251.116.156", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "108.156.211.125", "label": "108.156.211.125", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "172.217.1.131", "label": "172.217.1.131", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "142.250.115.155", "label": "142.250.115.155", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "142.251.33.4", "label": "142.251.33.4", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "108.177.235.172", "label": "108.177.235.172", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "172.93.201.12", "label": "172.93.201.12", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "23.106.215.100", "label": "23.106.215.100", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Netgear_b6:93:f1", "label": "Netgear_b6:93:f1", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "HewlettP_1c:47:ae", "label": "HewlettP_1c:47:ae", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Dell_c2:09:6a", "label": "Dell_c2:09:6a", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"Info": "Bind_ack: call_id: 2, Fragment: Single, max_xmit: 4280 max_recv: 4280, 3 results: Provider rejection, Acceptance, Negotiate ACK", "Protocol": "DCERPC", "Stream": 489.0, "Time": 4115.759082, "from": "10.5.3.103", "to": "10.5.3.5", "width": 1}, {"Info": "59477  \u003e  443 [ACK] Seq=1368 Ack=27286 Win=131584 Len=0", "Protocol": "TCP", "Stream": 0.0, "Time": 360.260324, "from": "10.5.3.103", "to": "216.58.193.144", "width": 1}, {"Info": "443  \u003e  59478 [ACK] Seq=2526674 Ack=1280 Win=71680 Len=0", "Protocol": "TCP", "Stream": 1.0, "Time": 413.899753, "from": "10.5.3.103", "to": "172.67.183.217", "width": 1}, {"Info": "59479  \u003e  443 [ACK] Seq=3342 Ack=5846 Win=131584 Len=0", "Protocol": "TCP", "Stream": 2.0, "Time": 480.069464, "from": "10.5.3.103", "to": "142.250.113.154", "width": 1}, {"Info": "59480  \u003e  443 [ACK] Seq=7371 Ack=13812 Win=130560 Len=0", "Protocol": "TCP", "Stream": 3.0, "Time": 600.257432, "from": "10.5.3.103", "to": "34.98.64.218", "width": 1}, {"Info": "443  \u003e  59481 [RST] Seq=4984 Win=0 Len=0", "Protocol": "TCP", "Stream": 4.0, "Time": 687.730198, "from": "10.5.3.103", "to": "162.247.243.147", "width": 1}, {"Info": "443  \u003e  59483 [ACK] Seq=34182 Ack=2698 Win=32256 Len=0", "Protocol": "TCP", "Stream": 6.0, "Time": 179.690522, "from": "10.5.3.103", "to": "18.209.76.230", "width": 1}, {"Info": "443  \u003e  59516 [ACK] Seq=1062 Ack=3220 Win=64128 Len=0", "Protocol": "TCP", "Stream": 36.0, "Time": 261.104118, "from": "10.5.3.103", "to": "23.218.201.243", "width": 1}, {"Info": "59487  \u003e  443 [ACK] Seq=5269 Ack=1211 Win=130560 Len=0", "Protocol": "TCP", "Stream": 10.0, "Time": 378.654978, "from": "10.5.3.103", "to": "35.190.80.1", "width": 1}, {"Info": "59488  \u003e  443 [ACK] Seq=20590 Ack=1061180 Win=131072 Len=0", "Protocol": "TCP", "Stream": 11.0, "Time": 3561.370655, "from": "10.5.3.103", "to": "44.196.139.167", "width": 1}, {"Info": "[TCP Keep-Alive ACK] 443  \u003e  59699 [ACK] Seq=16007 Ack=30703 Win=217088 Len=0 SLE=30702 SRE=30703", "Protocol": "TCP", "Stream": 217.0, "Time": 4113.788588, "from": "10.5.3.103", "to": "199.232.69.140", "width": 1}, {"Info": "M-SEARCH * HTTP/1.1 ", "Protocol": "SSDP", "Stream": NaN, "Time": 4015.846545, "from": "10.5.3.103", "to": "239.255.255.250", "width": 1}, {"Info": "443  \u003e  59864 [ACK] Seq=1475 Ack=839 Win=64128 Len=0", "Protocol": "TCP", "Stream": 382.0, "Time": 4001.934505, "from": "10.5.3.103", "to": "45.153.243.93", "width": 1}, {"Info": "443  \u003e  59495 [RST] Seq=83266 Win=0 Len=0", "Protocol": "TCP", "Stream": 16.0, "Time": 650.776362, "from": "10.5.3.103", "to": "23.218.201.30", "width": 1}, {"Info": "59498  \u003e  443 [RST, ACK] Seq=645 Ack=3890 Win=0 Len=0", "Protocol": "TCP", "Stream": 19.0, "Time": 179.143006, "from": "10.5.3.103", "to": "34.230.160.76", "width": 1}, {"Info": "59501  \u003e  443 [RST, ACK] Seq=645 Ack=3890 Win=0 Len=0", "Protocol": "TCP", "Stream": 22.0, "Time": 179.142694, "from": "10.5.3.103", "to": "23.22.22.139", "width": 1}, {"Info": "443  \u003e  59508 [ACK] Seq=4703 Ack=2498 Win=86272 Len=0", "Protocol": "TCP", "Stream": 28.0, "Time": 239.626927, "from": "10.5.3.103", "to": "35.71.131.137", "width": 1}, {"Info": "Host Announcement DESKTOP-CQZPYC6, Workstation, Server, NT Workstation, Potential Browser", "Protocol": "BROWSER", "Stream": NaN, "Time": 3738.512546, "from": "10.5.3.103", "to": "10.5.3.255", "width": 1}, {"Info": "443  \u003e  59507 [RST, ACK] Seq=6242 Ack=1009 Win=0 Len=0", "Protocol": "TCP", "Stream": 27.0, "Time": 306.878652, "from": "10.5.3.103", "to": "52.109.88.35", "width": 1}, {"Info": "443  \u003e  59511 [ACK] Seq=4713 Ack=1802 Win=64512 Len=0", "Protocol": "TCP", "Stream": 31.0, "Time": 252.218953, "from": "10.5.3.103", "to": "74.119.118.154", "width": 1}, {"Info": "59512  \u003e  443 [ACK] Seq=5494 Ack=6360 Win=131584 Len=0", "Protocol": "TCP", "Stream": 32.0, "Time": 601.59375, "from": "10.5.3.103", "to": "34.107.254.252", "width": 1}, {"Info": "443  \u003e  59513 [ACK] Seq=6658 Ack=3255 Win=34560 Len=0", "Protocol": "TCP", "Stream": 33.0, "Time": 272.344159, "from": "10.5.3.103", "to": "52.37.173.98", "width": 1}, {"Info": "443  \u003e  59515 [RST] Seq=5482 Win=0 Len=0", "Protocol": "TCP", "Stream": 35.0, "Time": 395.888829, "from": "10.5.3.103", "to": "3.139.123.30", "width": 1}, {"Info": "59517  \u003e  443 [RST] Seq=1453 Win=0 Len=0", "Protocol": "TCP", "Stream": 37.0, "Time": 300.353033, "from": "10.5.3.103", "to": "34.239.40.119", "width": 1}, {"Info": "59518  \u003e  443 [ACK] Seq=1858 Ack=1436 Win=131840 Len=0", "Protocol": "TCP", "Stream": 38.0, "Time": 481.63982, "from": "10.5.3.103", "to": "142.251.33.14", "width": 1}, {"Info": "443  \u003e  59519 [ACK] Seq=5451 Ack=1711 Win=142848 Len=0", "Protocol": "TCP", "Stream": 39.0, "Time": 852.044828, "from": "10.5.3.103", "to": "151.101.50.114", "width": 1}, {"Info": "443  \u003e  59523 [RST] Seq=951 Win=0 Len=0", "Protocol": "TCP", "Stream": 43.0, "Time": 533.413001, "from": "10.5.3.103", "to": "142.250.204.3", "width": 1}, {"Info": "443  \u003e  59522 [ACK] Seq=7441 Ack=3404 Win=35840 Len=0", "Protocol": "TCP", "Stream": 42.0, "Time": 357.665371, "from": "10.5.3.103", "to": "69.147.87.252", "width": 1}, {"Info": "443  \u003e  59529 [RST, ACK] Seq=6025 Ack=3048 Win=0 Len=0", "Protocol": "TCP", "Stream": 49.0, "Time": 527.671202, "from": "10.5.3.103", "to": "13.107.21.200", "width": 1}, {"Info": "59530  \u003e  443 [RST, ACK] Seq=2522 Ack=7235 Win=0 Len=0", "Protocol": "TCP", "Stream": 50.0, "Time": 466.065505, "from": "10.5.3.103", "to": "204.79.197.200", "width": 1}, {"Info": "59531  \u003e  443 [ACK] Seq=871 Ack=6604 Win=261888 Len=0", "Protocol": "TCP", "Stream": 51.0, "Time": 426.128003, "from": "10.5.3.103", "to": "104.117.247.32", "width": 1}, {"Info": "59534  \u003e  443 [ACK] Seq=1156 Ack=6278 Win=131072 Len=0", "Protocol": "TCP", "Stream": 54.0, "Time": 545.330526, "from": "10.5.3.103", "to": "52.182.128.59", "width": 1}, {"Info": "59537  \u003e  443 [ACK] Seq=5225 Ack=4865 Win=131328 Len=0", "Protocol": "TCP", "Stream": 57.0, "Time": 650.992644, "from": "10.5.3.103", "to": "13.69.239.74", "width": 1}, {"Info": "443  \u003e  59566 [RST] Seq=6473 Win=0 Len=0", "Protocol": "TCP", "Stream": 85.0, "Time": 1961.669802, "from": "10.5.3.103", "to": "23.218.204.72", "width": 1}, {"Info": "443  \u003e  59567 [ACK] Seq=5493 Ack=855 Win=4193536 Len=0", "Protocol": "TCP", "Stream": 86.0, "Time": 1963.247697, "from": "10.5.3.103", "to": "40.100.45.210", "width": 1}, {"Info": "443  \u003e  59568 [ACK] Seq=5660 Ack=756 Win=4193536 Len=0", "Protocol": "TCP", "Stream": 87.0, "Time": 1963.517607, "from": "10.5.3.103", "to": "52.96.121.194", "width": 1}, {"Info": "443  \u003e  59569 [ACK] Seq=6174 Ack=777 Win=523776 Len=0", "Protocol": "TCP", "Stream": 88.0, "Time": 1963.960399, "from": "10.5.3.103", "to": "52.108.248.98", "width": 1}, {"Info": "443  \u003e  59578 [ACK] Seq=6960 Ack=3114 Win=4193024 Len=0", "Protocol": "TCP", "Stream": 97.0, "Time": 2291.610672, "from": "10.5.3.103", "to": "13.107.6.163", "width": 1}, {"Info": "443  \u003e  59574 [RST] Seq=6473 Win=0 Len=0", "Protocol": "TCP", "Stream": 93.0, "Time": 2290.366177, "from": "10.5.3.103", "to": "23.38.92.72", "width": 1}, {"Info": "443  \u003e  59575 [ACK] Seq=8138 Ack=855 Win=4193536 Len=0", "Protocol": "TCP", "Stream": 94.0, "Time": 2290.517189, "from": "10.5.3.103", "to": "13.107.18.254", "width": 1}, {"Info": "443  \u003e  59576 [ACK] Seq=5660 Ack=759 Win=4193536 Len=0", "Protocol": "TCP", "Stream": 95.0, "Time": 2290.9601, "from": "10.5.3.103", "to": "52.96.17.2", "width": 1}, {"Info": "443  \u003e  59577 [ACK] Seq=7029 Ack=777 Win=4193536 Len=0", "Protocol": "TCP", "Stream": 96.0, "Time": 2291.316149, "from": "10.5.3.103", "to": "13.107.6.171", "width": 1}, {"Info": "59579  \u003e  443 [ACK] Seq=2598 Ack=4951 Win=261376 Len=0", "Protocol": "TCP", "Stream": 98.0, "Time": 2404.52798, "from": "10.5.3.103", "to": "13.89.179.9", "width": 1}, {"Info": "59586  \u003e  443 [RST] Seq=1842 Win=0 Len=0", "Protocol": "TCP", "Stream": 105.0, "Time": 2558.541035, "from": "10.5.3.103", "to": "52.183.220.149", "width": 1}, {"Info": "59587  \u003e  443 [ACK] Seq=2592 Ack=4950 Win=261376 Len=0", "Protocol": "TCP", "Stream": 106.0, "Time": 2705.000253, "from": "10.5.3.103", "to": "13.69.116.104", "width": 1}, {"Info": "59590  \u003e  80 [ACK] Seq=254 Ack=192 Win=131584 Len=0", "Protocol": "TCP", "Stream": 109.0, "Time": 2677.968333, "from": "10.5.3.103", "to": "209.197.3.8", "width": 1}, {"Info": "59968  \u003e  443 [ACK] Seq=1672 Ack=1381 Win=260608 Len=0", "Protocol": "TCP", "Stream": 486.0, "Time": 4111.845731, "from": "10.5.3.103", "to": "179.60.150.125", "width": 1}, {"Info": "59620  \u003e  443 [RST] Seq=4241 Win=0 Len=0", "Protocol": "TCP", "Stream": 139.0, "Time": 3021.230713, "from": "10.5.3.103", "to": "52.185.211.133", "width": 1}, {"Info": "[TCP Retransmission] 80  \u003e  59630 [FIN, ACK] Seq=507 Ack=566 Win=65536 Len=0", "Protocol": "TCP", "Stream": 149.0, "Time": 3141.396506, "from": "10.5.3.103", "to": "208.111.176.192", "width": 1}, {"Info": "59657  \u003e  443 [ACK] Seq=2276 Ack=4863 Win=131328 Len=0", "Protocol": "TCP", "Stream": 176.0, "Time": 3277.488658, "from": "10.5.3.103", "to": "20.189.173.15", "width": 1}, {"Info": "443  \u003e  59672 [ACK] Seq=6224 Ack=2082 Win=524544 Len=0", "Protocol": "TCP", "Stream": 190.0, "Time": 3399.764, "from": "10.5.3.103", "to": "40.78.63.86", "width": 1}, {"Info": "443  \u003e  59696 [ACK] Seq=6996 Ack=1372 Win=67840 Len=0", "Protocol": "TCP", "Stream": 214.0, "Time": 3803.847414, "from": "10.5.3.103", "to": "108.156.224.77", "width": 1}, {"Info": "[TCP Keep-Alive ACK] 443  \u003e  59704 [ACK] Seq=4481 Ack=1862 Win=143360 Len=0 SLE=1861 SRE=1862", "Protocol": "TCP", "Stream": 222.0, "Time": 4103.227097, "from": "10.5.3.103", "to": "151.101.193.140", "width": 1}, {"Info": "443  \u003e  59709 [RST] Seq=4271 Win=0 Len=0", "Protocol": "TCP", "Stream": 227.0, "Time": 3892.933867, "from": "10.5.3.103", "to": "108.138.159.109", "width": 1}, {"Info": "443  \u003e  59711 [RST] Seq=951 Win=0 Len=0", "Protocol": "TCP", "Stream": 229.0, "Time": 3853.504924, "from": "10.5.3.103", "to": "142.251.33.8", "width": 1}, {"Info": "443  \u003e  59712 [RST, ACK] Seq=6414 Ack=1291 Win=0 Len=0", "Protocol": "TCP", "Stream": 230.0, "Time": 3688.482353, "from": "10.5.3.103", "to": "204.79.197.219", "width": 1}, {"Info": "59714  \u003e  443 [ACK] Seq=1224 Ack=2613 Win=131584 Len=0", "Protocol": "TCP", "Stream": 232.0, "Time": 3803.981678, "from": "10.5.3.103", "to": "142.251.35.202", "width": 1}, {"Info": "443  \u003e  59942 [ACK] Seq=720 Ack=7637 Win=43008 Len=0", "Protocol": "TCP", "Stream": 460.0, "Time": 4089.406892, "from": "10.5.3.103", "to": "3.139.21.195", "width": 1}, {"Info": "443  \u003e  59720 [RST] Seq=6810 Win=0 Len=0", "Protocol": "TCP", "Stream": 238.0, "Time": 3974.284848, "from": "10.5.3.103", "to": "35.190.60.146", "width": 1}, {"Info": "443  \u003e  59719 [RST] Seq=1423 Win=0 Len=0", "Protocol": "TCP", "Stream": 237.0, "Time": 3854.275115, "from": "10.5.3.103", "to": "142.251.116.156", "width": 1}, {"Info": "59721  \u003e  443 [RST] Seq=1513 Win=0 Len=0", "Protocol": "TCP", "Stream": 239.0, "Time": 3804.34035, "from": "10.5.3.103", "to": "108.156.211.125", "width": 1}, {"Info": "443  \u003e  59723 [RST] Seq=951 Win=0 Len=0", "Protocol": "TCP", "Stream": 241.0, "Time": 3854.634909, "from": "10.5.3.103", "to": "172.217.1.131", "width": 1}, {"Info": "59724  \u003e  443 [ACK] Seq=1682 Ack=3207 Win=130304 Len=0", "Protocol": "TCP", "Stream": 242.0, "Time": 3804.731672, "from": "10.5.3.103", "to": "142.250.115.155", "width": 1}, {"Info": "59725  \u003e  443 [ACK] Seq=1636 Ack=1579 Win=131584 Len=0", "Protocol": "TCP", "Stream": 243.0, "Time": 3804.919658, "from": "10.5.3.103", "to": "142.251.33.4", "width": 1}, {"Info": "59974  \u003e  443 [FIN, ACK] Seq=721 Ack=755 Win=261376 Len=0", "Protocol": "TCP", "Stream": 492.0, "Time": 4115.670739, "from": "10.5.3.103", "to": "108.177.235.172", "width": 1}, {"Info": "59972  \u003e  443 [RST, ACK] Seq=1045 Ack=398 Win=0 Len=0", "Protocol": "TCP", "Stream": 490.0, "Time": 4113.158184, "from": "10.5.3.103", "to": "172.93.201.12", "width": 1}, {"Info": "443  \u003e  59963 [ACK] Seq=1017 Ack=891 Win=64128 Len=0", "Protocol": "TCP", "Stream": 481.0, "Time": 4107.586859, "from": "10.5.3.103", "to": "23.106.215.100", "width": 1}, {"Info": "10.5.3.103 is at 00:08:02:1c:47:ae", "Protocol": "ARP", "Stream": NaN, "Time": 4106.719089, "from": "Netgear_b6:93:f1", "to": "HewlettP_1c:47:ae", "width": 1}, {"Info": "10.5.3.5 is at a4:1f:72:c2:09:6a", "Protocol": "ARP", "Stream": NaN, "Time": 4086.153696, "from": "HewlettP_1c:47:ae", "to": "Dell_c2:09:6a", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
