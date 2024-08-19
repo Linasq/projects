@@ -12,12 +12,15 @@ import threading as t
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
+        # startup parameters
+        self.height = self.winfo_screenheight()
+        self.width = self.winfo_screenwidth()
+        self.title('Harmonogramy')
+        self.geometry(f'{self.width}x{self.height}')
         self.month=''
         self.year=''
         self.darkmode = True
 
-        self.title('Harmonogramy')
-        self.geometry('1920x1080')
         self.grid_columnconfigure((0,1,2,3), weight=1)
 
         # frame with name, surname, month and year
@@ -41,7 +44,6 @@ class App(customtkinter.CTk):
 
         self.sumTotalHours = customtkinter.CTkLabel(self, text='0:00', font=customtkinter.CTkFont(size=17))
         self.sumTotalHours.grid(row=2, column=2, padx=15, pady=10, sticky='ew', columnspan=2)
-
 
         # when pressed we save file as pdf
         self.button = customtkinter.CTkButton(self, text='Zapisz', command=self.button_callback, font=customtkinter.CTkFont(size=15))
@@ -154,6 +156,9 @@ class App(customtkinter.CTk):
             if f is None: return
 
             # creating pdf document
+
+            # uncomment this line if you want to create exe file with auto-py-to-exe
+            # pdfmetrics.registerFont(TTFont('JetBrains Mono', '_internal/JetBrainsMonoNerdFontMono-Regular.ttf'))
             pdfmetrics.registerFont(TTFont('JetBrains Mono', 'JetBrainsMonoNerdFontMono-Regular.ttf'))
             canvas = Canvas(filename=f, pagesize=A4)
             canvas.setFont(psfontname='JetBrains Mono', size=11)
@@ -218,7 +223,6 @@ class App(customtkinter.CTk):
             canvas.drawCentredString(1.7 * cm, yTemp, 'RAZEM') 
             canvas.drawCentredString(14 * cm, yTemp, f'{self.sumTotalHours.cget("text")}') 
             canvas.line(1 * cm, yyyTemp, 20 * cm, yyyTemp)
-
 
             canvas.save()
 
