@@ -29,7 +29,7 @@ class App(customtkinter.CTk):
 
         # toggle theme button
         self.buttonTheme = customtkinter.CTkButton(self, text='Motyw', command=self.changeTheme, font=customtkinter.CTkFont(size=15))
-        self.buttonTheme.grid(row=0, column=3, pady=20, padx=10)
+        self.buttonTheme.grid(row=0, column=2, pady=20, padx=10)
 
         # frame with days, etc
         self.dayFrame = DayFrame(self, 1, 15)
@@ -47,7 +47,7 @@ class App(customtkinter.CTk):
 
         # when pressed we save file as pdf
         self.button = customtkinter.CTkButton(self, text='Zapisz', command=self.button_callback, font=customtkinter.CTkFont(size=15))
-        self.button.grid(row=3, column=0, padx=20, pady=20, sticky='ew', columnspan=4)
+        self.button.grid(row=0, column=3, padx=20, pady=20, sticky='ew', columnspan=4)
 
         self.check_update()
 
